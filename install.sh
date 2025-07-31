@@ -48,8 +48,6 @@ show_subtext "Installing terminal tools [2/5]"
 source $GNK_INSTALL/development/terminal.sh
 source $GNK_INSTALL/development/development.sh
 source $GNK_INSTALL/development/nvim.sh
-source $GNK_INSTALL/development/ruby.sh
-source $GNK_INSTALL/development/docker.sh
 source $GNK_INSTALL/development/firewall.sh
 
 # Desktop
