@@ -6,5 +6,5 @@ Read more at [archgnk.org](https://archgnk.org).
 
 ## License
 
-GNK is af ork from Omarchy, which is released under the [MIT License](https://opensource.org/licenses/MIT).
+GNK is a fork from Omarchy, which is released under the [MIT License](https://opensource.org/licenses/MIT).
 
