@@ -14,19 +14,19 @@ gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # Setup theme links
-mkdir -p ~/.config/omarchy/themes
-for f in ~/.local/share/omarchy/themes/*; do ln -nfs "$f" ~/.config/omarchy/themes/; done
+mkdir -p ~/.config/gnk/themes
+for f in ~/.local/share/gnk/themes/*; do ln -nfs "$f" ~/.config/gnk/themes/; done
 
 # Set initial theme
-mkdir -p ~/.config/omarchy/current
-ln -snf ~/.config/omarchy/themes/tokyo-night ~/.config/omarchy/current/theme
-ln -snf ~/.config/omarchy/current/theme/backgrounds/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png ~/.config/omarchy/current/background
+mkdir -p ~/.config/gnk/current
+ln -snf ~/.config/gnk/themes/tokyo-night ~/.config/gnk/current/theme
+ln -snf ~/.config/gnk/current/theme/backgrounds/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png ~/.config/gnk/current/background
 
 # Set specific app links for current theme
-ln -snf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
+ln -snf ~/.config/gnk/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
 
 mkdir -p ~/.config/btop/themes
-ln -snf ~/.config/omarchy/current/theme/btop.theme ~/.config/btop/themes/current.theme
+ln -snf ~/.config/gnk/current/theme/btop.theme ~/.config/btop/themes/current.theme
 
 mkdir -p ~/.config/mako
-ln -snf ~/.config/omarchy/current/theme/mako.ini ~/.config/mako/config
+ln -snf ~/.config/gnk/current/theme/mako.ini ~/.config/mako/config
