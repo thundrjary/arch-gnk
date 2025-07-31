@@ -3,9 +3,9 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-STATE_DIR="$HOME/.local/state/gnk/migrations"
+STATE_DIR="$HOME/.local/state/omarchy/migrations"
 
-cd ~/.local/share/gnk
+cd ~/.local/share/omarchy
 
 # Create the migrations state directory, we will store an empty file for each migration that has already been performed.
 mkdir -p "$STATE_DIR"
