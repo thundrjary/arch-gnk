@@ -3,12 +3,12 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-GNK_INSTALL=~/.local/share/GNK/install
+GNK_INSTALL=~/.local/share/gnk/install
 
 # Give people a chance to retry running the installation
 catch_errors() {
   echo -e "\n\e[31mGNK installation failed!\e[0m"
-  echo "You can retry by running: bash ~/.local/share/GNK/install.sh"
+  echo "You can retry by running: bash ~/.local/share/gnk/install.sh"
   echo "Get help from the community: https://discord.gg/tXFUdasqhY"
 }
 
@@ -16,7 +16,7 @@ trap catch_errors ERR
 
 show_logo() {
   clear
-  tte -i ~/.local/share/GNK/logo.txt --frame-rate ${2:-120} ${1:-expand}
+  tte -i ~/.local/share/gnk/logo.txt --frame-rate ${2:-120} ${1:-expand}
   echo
 }
 
