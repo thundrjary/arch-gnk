@@ -1,8 +1,8 @@
 [Unit]
-Description=Omarchy Battery Monitor Check
+Description=GNK Battery Monitor Check
 After=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/.local/share/omarchy/bin/omarchy-battery-monitor
+ExecStart=%h/.local/share/gnk/bin/gnk-battery-monitor
 Environment=DISPLAY=:0
