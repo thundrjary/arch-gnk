@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=GNK
+Description=GNK splash screen.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/gnk
+ScriptFile=/usr/share/plymouth/themes/gnk/gnk.script
+ConsoleLogBackgroundColor=0x1a1b26
