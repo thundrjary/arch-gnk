@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# omarchy-theme-set: Set a theme, specified by its name.
-# Usage: omarchy-theme-set <theme-name>
+# gnk-theme-set: Set a theme, specified by its name.
+# Usage: gnk-theme-set <theme-name>
 
 if [[ -z "$1" ]]; then
-  echo "Usage: omarchy-theme-set <theme-name>" >&2
+  echo "Usage: gnk-theme-set <theme-name>" >&2
   exit 1
 fi
 
-THEMES_DIR="$HOME/.config/omarchy/themes/"
-CURRENT_THEME_DIR="$HOME/.config/omarchy/current/theme"
+THEMES_DIR="$HOME/.config/gnk/themes/"
+CURRENT_THEME_DIR="$HOME/.config/gnk/current/theme"
 
 THEME_NAME="$1"
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
@@ -24,7 +24,7 @@ fi
 ln -nsf "$THEME_PATH" "$CURRENT_THEME_DIR"
 
 # Change gnome modes
-if [[ -f ~/.config/omarchy/current/theme/light.mode ]]; then
+if [[ -f ~/.config/gnk/current/theme/light.mode ]]; then
   gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
   gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
 else
@@ -44,4 +44,4 @@ makoctl reload
 hyprctl reload
 
 # Set new background
-"$HOME/.local/share/omarchy/bin/omarchy-theme-bg-next"
+"$HOME/.local/share/gnk/bin/gnk-theme-bg-next"
