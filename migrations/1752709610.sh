@@ -1,2 +1,2 @@
 echo "Enable ufw firewall"
-source ~/.local/share/omarchy/install/development/firewall.sh
+source ~/.local/share/gnk/install/development/firewall.sh
