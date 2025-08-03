@@ -6,7 +6,7 @@ yay -S --noconfirm --needed \
   nautilus sushi ffmpegthumbnailer \
   slurp satty \
   mpv evince imv \
-  chromium gedit yt-dlp
+  chromium gedit yt-dlp geary \
 
 # Add screen recorder based on GPU
 if lspci | grep -qi 'nvidia'; then
