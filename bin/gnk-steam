@@ -1,0 +1,194 @@
+#!/bin/bash
+
+# SteamCMD Wrapper Script with Helpers and Shortcuts
+
+STEAMCMD_DIR="$HOME/steamcmd"
+SERVERS_DIR="$HOME/steam_servers"
+
+show_help() {
+    echo "SteamCMD Wrapper - Shortcuts and Helpers"
+    echo ""
+    echo "Basic Commands:"
+    echo "  login             Login anonymously"
+    echo "  login <user>      Login with Steam account"
+    echo "  shell, sh         Open interactive steamcmd"
+    echo ""
+    echo "App Management:"
+    echo "  install <appid> [dir]    Install/update app"
+    echo "  validate <appid> [dir]   Validate installation"
+    echo "  info <appid>             Show app info"
+    echo "  search <term>            Search for apps"
+    echo ""
+    echo "Utilities:"
+    echo "  status <dir>      Check server status"
+    echo "  update-all        Update all servers"
+    echo "  cleanup           Clean steamcmd cache"
+    echo ""
+    echo "  help, h           Show this help"
+}
+
+check_steamcmd() {
+    if ! command -v steamcmd &> /dev/null; then
+        echo "Error: steamcmd not installed"
+        exit 1
+    fi
+}
+
+setup_dirs() {
+    mkdir -p "$STEAMCMD_DIR" "$SERVERS_DIR"
+}
+
+login_anonymous() {
+    echo "Logging in anonymously..."
+    steamcmd +login anonymous +quit
+}
+
+login_user() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 login <username>"
+        exit 1
+    fi
+    echo "Logging in as $1..."
+    steamcmd +login "$1" +quit
+}
+
+open_shell() {
+    echo "Opening steamcmd interactive shell..."
+    steamcmd
+}
+
+install_app() {
+    local appid="$1"
+    local install_dir="${2:-$SERVERS_DIR/$appid}"
+    
+    if [ -z "$appid" ]; then
+        echo "Usage: $0 install <appid> [directory]"
+        exit 1
+    fi
+    
+    echo "Installing/updating app $appid to $install_dir..."
+    mkdir -p "$install_dir"
+    steamcmd +login anonymous +force_install_dir "$install_dir" +app_update "$appid" validate +quit
+}
+
+validate_app() {
+    local appid="$1" 
+    local install_dir="${2:-$SERVERS_DIR/$appid}"
+    
+    if [ -z "$appid" ]; then
+        echo "Usage: $0 validate <appid> [directory]"
+        exit 1
+    fi
+    
+    echo "Validating app $appid in $install_dir..."
+    steamcmd +login anonymous +force_install_dir "$install_dir" +app_update "$appid" validate +quit
+}
+
+show_app_info() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 info <appid>"
+        exit 1
+    fi
+    
+    echo "Getting info for app $1..."
+    steamcmd +login anonymous +app_info_update 1 +app_info_print "$1" +quit
+}
+
+search_apps() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 search <search_term>"
+        exit 1
+    fi
+    
+    echo "Searching for '$1'..."
+    echo "Note: Use online Steam DB for better search results"
+    echo "https://steamdb.info/search/?a=app&q=$1"
+}
+
+
+
+check_status() {
+    local dir="$1"
+    if [ -z "$dir" ]; then
+        echo "Usage: $0 status <server_directory>"
+        exit 1
+    fi
+    
+    if [ ! -d "$dir" ]; then
+        echo "Directory $dir does not exist"
+        exit 1
+    fi
+    
+    echo "Server directory: $dir"
+    echo "Size: $(du -sh "$dir" | cut -f1)"
+    echo "Files: $(find "$dir" -type f | wc -l)"
+    echo ""
+    echo "Executables found:"
+    find "$dir" -name "*.exe" -o -name "*server*" -type f -executable 2>/dev/null | head -10
+}
+
+update_all() {
+    echo "Updating all servers in $SERVERS_DIR..."
+    for server_dir in "$SERVERS_DIR"/*; do
+        if [ -d "$server_dir" ]; then
+            appid=$(basename "$server_dir")
+            if [[ "$appid" =~ ^[0-9]+$ ]]; then
+                echo "Updating $appid..."
+                validate_app "$appid" "$server_dir"
+            fi
+        fi
+    done
+}
+
+cleanup_cache() {
+    echo "Cleaning steamcmd cache..."
+    rm -rf "$HOME/.steam/steamcmd"
+    rm -rf "$STEAMCMD_DIR/steamapps/downloading"
+    echo "Cache cleaned"
+}
+
+# Main script
+check_steamcmd
+setup_dirs
+
+case "$1" in
+    login)
+        if [ -z "$2" ]; then
+            login_anonymous
+        else
+            login_user "$2"
+        fi
+        ;;
+    shell|sh)
+        open_shell
+        ;;
+    install)
+        install_app "$2" "$3"
+        ;;
+    validate)
+        validate_app "$2" "$3"
+        ;;
+    info)
+        show_app_info "$2"
+        ;;
+    search)
+        search_apps "$2"
+        ;;
+    status)
+        check_status "$2"
+        ;;
+    update-all)
+        update_all
+        ;;
+    cleanup)
+        cleanup_cache
+        ;;
+    help|h|"")
+        show_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        echo "Run '$0 help' for usage"
+        exit 1
+        ;;
+esac
