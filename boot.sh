@@ -15,7 +15,7 @@ sudo pacman -Sy --noconfirm --needed git
 
 echo -e "\nCloning GNK..."
 rm -rf ~/.local/share/gnk/
-git clone https://github.com/basecamp/gnk.git ~/.local/share/gnk >/dev/null
+git clone https://github.com/thundrjary/gentle-and-kind-arch.git ~/.local/share/gnk >/dev/null
 
 # Use custom branch if instructed
 if [[ -n "$GNK_REF" ]]; then
