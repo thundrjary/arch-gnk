@@ -61,6 +61,7 @@ source $GNK_INSTALL/desktop/bluetooth.sh
 source $GNK_INSTALL/desktop/asdcontrol.sh
 source $GNK_INSTALL/desktop/fonts.sh
 source $GNK_INSTALL/desktop/printer.sh
+source $GNK_INSTALL/desktop/kidsapps.sh
 
 # Apps
 show_logo expand
