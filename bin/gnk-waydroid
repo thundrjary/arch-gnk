@@ -1,0 +1,222 @@
+#!/bin/bash
+
+# Waydroid Wrapper Script with Helpers and Shortcuts
+
+show_help() {
+    echo "Waydroid Wrapper - Shortcuts and Helpers"
+    echo ""
+    echo "Basic Commands:"
+    echo "  start, s          Start waydroid session"
+    echo "  stop, x           Stop waydroid session"
+    echo "  show, ui          Show waydroid UI"
+    echo "  restart, r        Restart session"
+    echo ""
+    echo "App Management:"
+    echo "  install <apk>     Install APK file"
+    echo "  list, ls          List installed apps"
+    echo "  launch <pkg>      Launch app by package name"
+    echo "  uninstall <pkg>   Remove app"
+    echo ""
+    echo "System:"
+    echo "  status, st        Show waydroid status"
+    echo "  container         Restart waydroid container"
+    echo "  logs              Show waydroid logs"
+    echo "  shell             Open waydroid shell"
+    echo ""
+    echo "Utilities:"
+    echo "  quick             Quick start (session + UI)"
+    echo "  reset             Reset waydroid data"
+    echo "  backup            Backup waydroid data"
+    echo "  restore           Restore waydroid data"
+    echo ""
+    echo "  help, h           Show this help"
+}
+
+check_waydroid() {
+    if ! command -v waydroid &> /dev/null; then
+        echo "Error: waydroid not installed"
+        exit 1
+    fi
+}
+
+start_session() {
+    echo "Starting waydroid session..."
+    waydroid session start
+}
+
+stop_session() {
+    echo "Stopping waydroid session..."
+    waydroid session stop
+}
+
+show_ui() {
+    echo "Showing waydroid UI..."
+    waydroid show-full-ui
+}
+
+restart_session() {
+    echo "Restarting waydroid session..."
+    stop_session
+    sleep 2
+    start_session
+}
+
+quick_start() {
+    echo "Quick starting waydroid..."
+    start_session
+    sleep 3
+    show_ui &
+}
+
+install_apk() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 install <apk_file>"
+        exit 1
+    fi
+    echo "Installing $1..."
+    waydroid app install "$1"
+}
+
+list_apps() {
+    echo "Installed apps:"
+    waydroid app list
+}
+
+launch_app() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 launch <package_name>"
+        exit 1
+    fi
+    echo "Launching $1..."
+    waydroid app launch "$1"
+}
+
+uninstall_app() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 uninstall <package_name>"
+        exit 1
+    fi
+    echo "Uninstalling $1..."
+    waydroid app uninstall "$1"
+}
+
+show_status() {
+    echo "Waydroid Status:"
+    waydroid status
+    echo ""
+    echo "Container Status:"
+    systemctl status waydroid-container --no-pager -l
+}
+
+restart_container() {
+    echo "Restarting waydroid container..."
+    sudo systemctl restart waydroid-container
+    echo "Container restarted"
+}
+
+show_logs() {
+    echo "Waydroid logs:"
+    waydroid log
+}
+
+open_shell() {
+    echo "Opening waydroid shell..."
+    waydroid shell
+}
+
+reset_waydroid() {
+    read -p "This will delete all waydroid data. Continue? (y/N): " confirm
+    if [[ $confirm == [yY] ]]; then
+        echo "Resetting waydroid..."
+        stop_session
+        sudo rm -rf /var/lib/waydroid
+        waydroid init
+        echo "Reset complete"
+    fi
+}
+
+backup_waydroid() {
+    backup_dir="$HOME/waydroid_backup_$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up waydroid to $backup_dir..."
+    mkdir -p "$backup_dir"
+    sudo cp -r /var/lib/waydroid "$backup_dir/"
+    echo "Backup complete: $backup_dir"
+}
+
+restore_waydroid() {
+    if [ -z "$1" ]; then
+        echo "Usage: $0 restore <backup_directory>"
+        exit 1
+    fi
+    read -p "This will overwrite current waydroid data. Continue? (y/N): " confirm
+    if [[ $confirm == [yY] ]]; then
+        echo "Restoring from $1..."
+        stop_session
+        sudo rm -rf /var/lib/waydroid
+        sudo cp -r "$1/waydroid" /var/lib/
+        restart_container
+        echo "Restore complete"
+    fi
+}
+
+# Main script
+check_waydroid
+
+case "$1" in
+    start|s)
+        start_session
+        ;;
+    stop|x)
+        stop_session
+        ;;
+    show|ui)
+        show_ui
+        ;;
+    restart|r)
+        restart_session
+        ;;
+    install)
+        install_apk "$2"
+        ;;
+    list|ls)
+        list_apps
+        ;;
+    launch)
+        launch_app "$2"
+        ;;
+    uninstall)
+        uninstall_app "$2"
+        ;;
+    status|st)
+        show_status
+        ;;
+    container)
+        restart_container
+        ;;
+    logs)
+        show_logs
+        ;;
+    shell)
+        open_shell
+        ;;
+    quick)
+        quick_start
+        ;;
+    reset)
+        reset_waydroid
+        ;;
+    backup)
+        backup_waydroid
+        ;;
+    restore)
+        restore_waydroid "$2"
+        ;;
+    help|h|"")
+        show_help
+        ;;
+    *)
+        echo "Unknown command: $1"
+        echo "Run '$0 help' for usage"
+        exit 1
+        ;;
+esac
