@@ -41,6 +41,7 @@ source $GNK_INSTALL/config/power.sh
 source $GNK_INSTALL/config/timezones.sh
 source $GNK_INSTALL/config/login.sh
 source $GNK_INSTALL/config/nvidia.sh
+source $GNK_INSTALL/config/touchpad.sh
 
 # Development
 show_logo decrypt 920
