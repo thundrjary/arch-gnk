@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Tux Paint
+GenericName=Children's drawing program
+Comment=Simple drawing program for children
+Exec=tuxpaint
+Icon=tuxpaint
+Terminal=false
+Type=Application
+Categories=Application;Graphics;Education;KidsGame;
+StartupNotify=true
