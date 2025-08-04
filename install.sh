@@ -31,17 +31,22 @@ source $GNK_INSTALL/preflight/presentation.sh
 
 # Configuration
 show_logo beams 240
-show_subtext "Let's install GNK! [1/5]"
-source $GNK_INSTALL/config/identification.sh
+show_subtext "Let's install GNK!"
+show_subtext "Setting up system [1/6]"
 source $GNK_INSTALL/config/config.sh
-source $GNK_INSTALL/config/detect-keyboard-layout.sh
-source $GNK_INSTALL/config/fix-fkeys.sh
-source $GNK_INSTALL/config/network.sh
+source $GNK_INSTALL/system/boot.sh
+source $GNK_INSTALL/system/network.sh
 source $GNK_INSTALL/config/power.sh
-source $GNK_INSTALL/config/timezones.sh
-source $GNK_INSTALL/config/login.sh
+source $GNK_INSTALL/config/fix-fkeys.sh
 source $GNK_INSTALL/config/nvidia.sh
+source $GNK_INSTALL/config/detect-keyboard-layout.sh
+source $GNK_INSTALL/config/timezones.sh
 source $GNK_INSTALL/config/touchpad.sh
+
+# Legacy "config" directory
+source $GNK_INSTALL/config/identification.sh
+source $GNK_INSTALL/config/login.sh
+
 
 # Development
 show_logo decrypt 920
